@@ -1,26 +1,29 @@
-package by.epam.shape.entity;
+package by.epam.shape.entity.impl;
 
-public class Tetragon {
-    private String name;
+import by.epam.shape.entity.Shape;
+
+
+public class Tetragon implements Shape {
+    private long tetragonId;
     private Point pointA;
     private Point pointB;
     private Point pointC;
     private Point pointD;
 
-    public Tetragon(String name, Point pointA, Point pointB, Point pointC, Point pointD) {
-        this.name = name;
+    public Tetragon(long tetragonId, Point pointA, Point pointB, Point pointC, Point pointD) {
+        this.tetragonId = tetragonId;
         this.pointA = pointA;
         this.pointB = pointB;
         this.pointC = pointC;
         this.pointD = pointD;
     }
 
-    public String getName() {
-        return name;
+    public long getTetragonId() {
+        return tetragonId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTetragonId(long tetragonId) {
+        this.tetragonId = tetragonId;
     }
 
     public Point getPointA() {
@@ -62,7 +65,7 @@ public class Tetragon {
 
         Tetragon tetragon = (Tetragon) o;
 
-        if (name != null ? !name.equals(tetragon.name) : tetragon.name != null) return false;
+        if (tetragonId != tetragon.tetragonId) return false;
         if (pointA != null ? !pointA.equals(tetragon.pointA) : tetragon.pointA != null) return false;
         if (pointB != null ? !pointB.equals(tetragon.pointB) : tetragon.pointB != null) return false;
         if (pointC != null ? !pointC.equals(tetragon.pointC) : tetragon.pointC != null) return false;
@@ -71,7 +74,7 @@ public class Tetragon {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = (int) (tetragonId ^ (tetragonId >>> 32));
         result = 31 * result + (pointA != null ? pointA.hashCode() : 0);
         result = 31 * result + (pointB != null ? pointB.hashCode() : 0);
         result = 31 * result + (pointC != null ? pointC.hashCode() : 0);
@@ -81,12 +84,9 @@ public class Tetragon {
 
     @Override
     public String toString() {
-        return "Tetragon{" +
-                "name='" + name + '\'' +
-                ", pointA=" + pointA +
-                ", pointB=" + pointB +
-                ", pointC=" + pointC +
-                ", pointD=" + pointD +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        return stringBuilder.append("Tetragon{").append("id='").append(tetragonId).append('\'').append(", pointA=").
+                append(pointA).append(", pointB=").append(pointB).append(", pointC=").
+                append(pointC).append(", pointD=").append(pointD).append('}').toString();
     }
 }

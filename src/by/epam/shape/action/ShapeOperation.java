@@ -1,87 +1,80 @@
 package by.epam.shape.action;
-import by.epam.shape.entity.Point;
-import by.epam.shape.entity.Tetragon;
-import by.epam.shape.entity.TetragonParameters;
-import by.epam.shape.exception.ShapeException;
 
-import java.util.Arrays;
+
+import by.epam.shape.entity.impl.Point;
+import by.epam.shape.entity.impl.Tetragon;
+import by.epam.shape.exception.ShapeException;
+import by.epam.shape.validation.ShapeValidator;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShapeOperation {
+    ShapeValidator shapeValidator = new ShapeValidator();
 
     public double calculateSideOfTetragon(Point point1, Point point2) {
         return Math.sqrt(Math.pow(point2.getValueX() - point1.getValueX(), 2) +
                 Math.pow(point2.getValueY() - point1.getValueY(), 2));
     }
 
-    public TetragonParameters findSideOfTetragon(Tetragon tetragon) {
-        double[] sides = new double[4];
-        sides[0] = (calculateSideOfTetragon(tetragon.getPointA(), tetragon.getPointB()));
-        sides[1] = (calculateSideOfTetragon(tetragon.getPointB(), tetragon.getPointC()));
-        sides[2] = (calculateSideOfTetragon(tetragon.getPointC(), tetragon.getPointD()));
-        sides[3] = (calculateSideOfTetragon(tetragon.getPointD(), tetragon.getPointA()));
-        Arrays.sort(sides);
-        return new TetragonParameters(sides[0], sides[1], sides[2], sides[3]);
+    public List<Double> findSideOfTetragon(Tetragon tetragon) {
+        List<Double> sides = new ArrayList<>();
+        sides.add(calculateSideOfTetragon(tetragon.getPointA(), tetragon.getPointB()));
+        sides.add(calculateSideOfTetragon(tetragon.getPointB(), tetragon.getPointC()));
+        sides.add(calculateSideOfTetragon(tetragon.getPointC(), tetragon.getPointD()));
+        sides.add(calculateSideOfTetragon(tetragon.getPointD(), tetragon.getPointA()));
+        return sides;
     }
 
-    public boolean isTetragon(TetragonParameters tetragonParameters) {
-        boolean b = false;
-         {
-            b = true;
-        }
-        return b;
-    }
-
-    public boolean isSquare(TetragonParameters tetragonParameters) {
-        boolean b = false;
-        if (tetragonParameters.getSideAB() == tetragonParameters.getSideBC() &&
-                tetragonParameters.getSideBC() == tetragonParameters.getSideCD() &&
-                tetragonParameters.getSideCD() == tetragonParameters.getSideDA() &&
-                tetragonParameters.getSideDA() == tetragonParameters.getSideAB()) {
-            b = true;
-        }
-        return b;
-    }
-
-    public boolean isTrapezoid(TetragonParameters tetragonParameters) {
-        boolean b = false;
-        if (tetragonParameters.getSideAB() != tetragonParameters.getSideCD()) {
-            b = true;
-        }
-        return b;
-    }
-
-    public boolean isRectangle(TetragonParameters tetragonParameters) {
-        boolean b = false;
-        if (tetragonParameters.getSideAB() == tetragonParameters.getSideCD()) {
-            b = true;
-        }
-        return b;
-    }
-
-
-    public boolean isConvexTetragon(TetragonParameters tetragonParameters) {
-        int sumOfAngles = 360;
-        int countOfSidesOfTetragon = 0;
-        boolean b = false;
-        if (isTetragon(tetragonParameters)) {
-            countOfSidesOfTetragon = 4;
-        }
-        if (sumOfAngles == ((countOfSidesOfTetragon - 2) * 180)) {
-            b = true;
-        }
-        return b;
-    }
-
-    public double findPerimeter(TetragonParameters tetragonParameters) throws ShapeException {
+    public double calculatePerimeter(List<Double> sides, List<Double> coordinates) throws ShapeException {
         double perimeter = 0;
-        if (!isTetragon(tetragonParameters)) {
-            throw new ShapeException();
+        double sideAB = sides.get(0);
+        double sideBC = sides.get(1);
+        double sideCD = sides.get(2);
+        double sideDA = sides.get(3);
+        if (!shapeValidator.isTetragon(coordinates, sides)) {
+            throw new ShapeException("This shape is not a tetragon");
         }
-        if (isTetragon(tetragonParameters)) {
-            perimeter = tetragonParameters.getSideAB() + tetragonParameters.getSideBC() +
-                    tetragonParameters.getSideCD() + tetragonParameters.getSideDA();
+        if (shapeValidator.isTetragon(coordinates, sides)) {
+            perimeter = sideAB + sideBC + sideCD + sideDA;
 
         }
         return perimeter;
+    }
+
+    public double calculateArea(List<Double> sides, List<Double> coordinates) throws ShapeException {
+        double area = 0;
+        double coordPoint1X = coordinates.get(0);
+        double coordPoint1Y = coordinates.get(1);
+        double coordPoint2X = coordinates.get(2);
+        double coordPoint2Y = coordinates.get(3);
+        double coordPoint3X = coordinates.get(4);
+        double coordPoint3Y = coordinates.get(5);
+        double coordPoint4X = coordinates.get(6);
+        double coordPoint4Y = coordinates.get(7);
+        double sideAB = sides.get(0);
+        double sideCD = sides.get(2);
+        double sideDA = sides.get(3);
+        double firstDiagonal = coordPoint1X + coordPoint3X + coordPoint2X + coordPoint4X;
+        double secondDiagonal = coordPoint1Y + coordPoint3Y + coordPoint2Y + coordPoint4Y;
+        if (!shapeValidator.isTetragon(coordinates, sides)) {
+            throw new ShapeException("This shape is not a tetragon");
+        }
+        if (!shapeValidator.isConvexTetragon(coordinates, sides)) {
+            throw new ShapeException("This shape is not a ConvexTetragon");
+        }
+
+        if (shapeValidator.isSquare(sides)) {
+            area = Math.pow(sideAB, 2);
+        } else if (shapeValidator.isRectangle(sides)) {
+            area = sideAB * sideDA;
+        } else if (shapeValidator.isTrapezoid(sides)) {
+            area = (sideAB + sideCD) * (Math.sqrt(Math.pow(sideDA, 2) - (Math.pow((Math.pow((sideAB - sideCD), 2) +
+                    Math.pow(sideDA, 2) - Math.pow(sideAB, 2)) / (2 * (sideAB - sideCD)), 2))));
+        } else if (shapeValidator.isRhombus(coordinates)) {
+            area = (firstDiagonal * secondDiagonal) / 2;
+        }
+        return area;
     }
 }

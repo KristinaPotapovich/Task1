@@ -1,14 +1,16 @@
-package by.epam.shape.entity;
+package by.epam.shape.entity.impl;
 
-import by.epam.shape.generator.IdGenerator;
+import by.epam.shape.entity.Shape;
 
-public class Point {
+
+public class Point implements Shape {
     private long pointId;
     private double valueX;
     private double valueY;
 
+
     public Point(long pointId, double valueX, double valueY) {
-        this.pointId = IdGenerator.generateId();
+        this.pointId = pointId;
         this.valueX = valueX;
         this.valueY = valueY;
     }
@@ -63,10 +65,8 @@ public class Point {
 
     @Override
     public String toString() {
-        return "Point{" +
-                "pointId=" + pointId +
-                ", valueX=" + valueX +
-                ", valueY=" + valueY +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        return stringBuilder.append("Point{").append("pointId=").append(pointId).append(", valueX=").append(valueX).
+                append(", valueY=").append(valueY).append('}').toString();
     }
 }
