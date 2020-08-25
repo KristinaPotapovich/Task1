@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class ShapeValidator {
 
     public static final String REGEX = "^[\\d+].?[\\d+]? [\\d+].?[\\d+]$";
+    public static final int MAX_COORDINATES = 8;
 
     public List<String> filterInputData(List<String> coordinatesFromData) {
         List<String> groupOfCoordinates = new ArrayList<>();
@@ -21,9 +22,6 @@ public class ShapeValidator {
         }
         return groupOfCoordinates;
     }
-
-    public static final int MAX_COORDINATES = 8;
-
 
     public boolean isTetragon(List<Double> coordinates, List<Double> sides) {
 
