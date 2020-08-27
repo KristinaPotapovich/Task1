@@ -1,4 +1,4 @@
-package observer;
+package by.epam.shape.observer;
 
 import by.epam.shape.entity.impl.Tetragon;
 import by.epam.shape.exception.ShapeException;

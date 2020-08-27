@@ -1,7 +1,7 @@
 package by.epam.shape.entity.impl;
 
 import by.epam.shape.entity.Observable;
-import observer.Observer;
+import by.epam.shape.observer.Observer;
 import by.epam.shape.entity.Shape;
 import by.epam.shape.exception.ShapeException;
 

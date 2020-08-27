@@ -13,8 +13,8 @@ import by.epam.shape.parsing.DataParser;
 import by.epam.shape.reader.DataReader;
 import by.epam.shape.repository.Repository;
 import by.epam.shape.validation.ShapeValidator;
-import observer.Observer;
-import observer.impl.TetragonObserver;
+import by.epam.shape.observer.Observer;
+import by.epam.shape.observer.impl.TetragonObserver;
 
 import java.util.List;
 

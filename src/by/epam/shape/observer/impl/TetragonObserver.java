@@ -1,4 +1,4 @@
-package observer.impl;
+package by.epam.shape.observer.impl;
 
 
 import by.epam.shape.action.ShapeOperation;
@@ -6,7 +6,7 @@ import by.epam.shape.entity.TetragonParameters;
 import by.epam.shape.entity.Warehouse;
 import by.epam.shape.entity.impl.Tetragon;
 import by.epam.shape.exception.ShapeException;
-import observer.Observer;
+import by.epam.shape.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

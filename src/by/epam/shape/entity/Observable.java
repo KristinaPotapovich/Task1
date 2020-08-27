@@ -1,7 +1,7 @@
 package by.epam.shape.entity;
 
 import by.epam.shape.exception.ShapeException;
-import observer.Observer;
+import by.epam.shape.observer.Observer;
 
 public interface Observable {
     void attach(Observer observer);
