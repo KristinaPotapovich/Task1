@@ -1,9 +1,5 @@
 package by.epam.shape.validation;
 
-
-import by.epam.shape.exception.ShapeException;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -11,7 +7,7 @@ import java.util.regex.Pattern;
 public class ShapeValidator {
 
     public static final String REGEX = "^[\\d+].?[\\d+]? [\\d+].?[\\d+]$";
-    public static final int MAX_COORDINATES = 8;
+
 
     public List<String> filterInputData(List<String> coordinatesFromData) {
         List<String> groupOfCoordinates = new ArrayList<>();
@@ -24,8 +20,9 @@ public class ShapeValidator {
     }
 
     public boolean isTetragon(List<Double> coordinates, List<Double> sides) {
+        int count_coordinates = 8;
 
-        if (coordinates.size() != MAX_COORDINATES) {
+        if (coordinates.size() % count_coordinates != 0) {
             return false;
         }
         return isSumOfThreeSidesLessThanFourth(sides);
@@ -40,7 +37,7 @@ public class ShapeValidator {
                 sideCD > sideBC && sideBC + sideCD + sideDA > sideAB;
     }
 
-    public boolean isThreePointsOnOneLine(List<Double> coordinates) throws ShapeException {
+    public boolean isThreePointsOnOneLine(List<Double> coordinates) {
         double firstPointX = coordinates.get(0);
         double firstPointY = coordinates.get(1);
         double secondPointX = coordinates.get(2);
@@ -49,12 +46,13 @@ public class ShapeValidator {
         double thirdPointY = coordinates.get(5);
         double forthPointX = coordinates.get(6);
         double fourthPointY = coordinates.get(7);
+        boolean result = false;
 
         if ((firstPointX == secondPointX && secondPointX == thirdPointX && thirdPointX == forthPointX) ||
                 (firstPointY == secondPointY && secondPointY == thirdPointY && thirdPointY == fourthPointY)) {
-            throw new ShapeException("Three Points On One Line");
+
         }
-        return false;
+        return result;
     }
 
     public boolean isSquare(List<Double> sides) {

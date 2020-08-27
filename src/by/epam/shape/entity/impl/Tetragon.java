@@ -1,14 +1,21 @@
 package by.epam.shape.entity.impl;
 
+import by.epam.shape.entity.Observable;
+import observer.Observer;
 import by.epam.shape.entity.Shape;
+import by.epam.shape.exception.ShapeException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Tetragon implements Shape {
+public class Tetragon implements Shape, Observable {
     private long tetragonId;
     private Point pointA;
     private Point pointB;
     private Point pointC;
     private Point pointD;
+    List<Observer> observers = new ArrayList<>();
 
     public Tetragon(long tetragonId, Point pointA, Point pointB, Point pointC, Point pointD) {
         this.tetragonId = tetragonId;
@@ -19,43 +26,54 @@ public class Tetragon implements Shape {
     }
 
     public long getTetragonId() {
+
         return tetragonId;
     }
 
-    public void setTetragonId(long tetragonId) {
+    public void setTetragonId(long tetragonId) throws ShapeException {
+
         this.tetragonId = tetragonId;
+        notifyObservers();
     }
 
     public Point getPointA() {
         return pointA;
     }
 
-    public void setPointA(Point pointA) {
+    public void setPointA(Point pointA) throws ShapeException {
         this.pointA = pointA;
+        notifyObservers();
     }
 
     public Point getPointB() {
+
         return pointB;
     }
 
-    public void setPointB(Point pointB) {
+    public void setPointB(Point pointB) throws ShapeException {
+
         this.pointB = pointB;
+        notifyObservers();
     }
 
     public Point getPointC() {
+
         return pointC;
     }
 
-    public void setPointC(Point pointC) {
+    public void setPointC(Point pointC) throws ShapeException {
+
         this.pointC = pointC;
+        notifyObservers();
     }
 
     public Point getPointD() {
         return pointD;
     }
 
-    public void setPointD(Point pointD) {
+    public void setPointD(Point pointD) throws ShapeException {
         this.pointD = pointD;
+        notifyObservers();
     }
 
     @Override
@@ -89,4 +107,26 @@ public class Tetragon implements Shape {
                 append(pointA).append(", pointB=").append(pointB).append(", pointC=").
                 append(pointC).append(", pointD=").append(pointD).append('}').toString();
     }
+
+    @Override
+    public void attach(Observer observer) {
+        this.observers.add(observer);
+
+    }
+
+    @Override
+    public void detach(Observer observer) {
+        this.observers.remove(observer);
+
+    }
+
+    @Override
+    public void notifyObservers() throws ShapeException {
+        for (Observer observer : observers) {
+            observer.actionPerformed(this);
+        }
+
+    }
+
+
 }

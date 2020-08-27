@@ -1,10 +1,9 @@
-package test.by.epam.shape.validation;
+package by.epam.shape.validation;
 
 
 import by.epam.shape.exception.ShapeException;
 
 import by.epam.shape.reader.DataReader;
-import by.epam.shape.validation.ShapeValidator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;

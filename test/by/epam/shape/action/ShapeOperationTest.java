@@ -1,7 +1,7 @@
-package test.by.epam.shape.action;
+package by.epam.shape.action;
 
-import by.epam.shape.action.ShapeOperation;
 import by.epam.shape.entity.impl.Point;
+import by.epam.shape.entity.impl.Tetragon;
 import by.epam.shape.exception.ShapeException;
 import by.epam.shape.generator.IdGenerator;
 import org.testng.Assert;
@@ -19,6 +19,7 @@ public class ShapeOperationTest {
     private Point secondPoint;
     private Point thirdPoint;
     private Point fourthPoint;
+    private List<Tetragon> tetragons;
 
     @BeforeTest
     public void init() {
@@ -43,7 +44,7 @@ public class ShapeOperationTest {
     @Test
     public void calculateSideOfTetragonTest() {
         double expected = 2.0;
-        double actual = shapeOperation.calculateSideOfTetragon(firstPoint, secondPoint);
+        double actual = shapeOperation.calculateSideFormula(firstPoint, secondPoint);
         Assert.assertEquals(actual, expected, 0.0001);
     }
 
@@ -57,10 +58,10 @@ public class ShapeOperationTest {
         expected.add(5.0);
 
         List<Double> actual = new ArrayList<>();
-        actual.add(shapeOperation.calculateSideOfTetragon(firstPoint, secondPoint));
-        actual.add(shapeOperation.calculateSideOfTetragon(secondPoint, thirdPoint));
-        actual.add(shapeOperation.calculateSideOfTetragon(thirdPoint, fourthPoint));
-        actual.add(shapeOperation.calculateSideOfTetragon(fourthPoint, firstPoint));
+        actual.add(shapeOperation.calculateSideFormula(firstPoint, secondPoint));
+        actual.add(shapeOperation.calculateSideFormula(secondPoint, thirdPoint));
+        actual.add(shapeOperation.calculateSideFormula(thirdPoint, fourthPoint));
+        actual.add(shapeOperation.calculateSideFormula(fourthPoint, firstPoint));
         Assert.assertEquals(actual, expected);
     }
 

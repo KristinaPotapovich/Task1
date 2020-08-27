@@ -13,17 +13,17 @@ import java.util.List;
 public class ShapeOperation {
     ShapeValidator shapeValidator = new ShapeValidator();
 
-    public double calculateSideOfTetragon(Point point1, Point point2) {
+    public double calculateSideFormula(Point point1, Point point2) {
         return Math.sqrt(Math.pow(point2.getValueX() - point1.getValueX(), 2) +
                 Math.pow(point2.getValueY() - point1.getValueY(), 2));
     }
 
-    public List<Double> findSideOfTetragon(Tetragon tetragon) {
+    public List<Double> calculateSideOfTetragon(Tetragon tetragon) {
         List<Double> sides = new ArrayList<>();
-        sides.add(calculateSideOfTetragon(tetragon.getPointA(), tetragon.getPointB()));
-        sides.add(calculateSideOfTetragon(tetragon.getPointB(), tetragon.getPointC()));
-        sides.add(calculateSideOfTetragon(tetragon.getPointC(), tetragon.getPointD()));
-        sides.add(calculateSideOfTetragon(tetragon.getPointD(), tetragon.getPointA()));
+        sides.add(calculateSideFormula(tetragon.getPointA(), tetragon.getPointB()));
+        sides.add(calculateSideFormula(tetragon.getPointB(), tetragon.getPointC()));
+        sides.add(calculateSideFormula(tetragon.getPointC(), tetragon.getPointD()));
+        sides.add(calculateSideFormula(tetragon.getPointD(), tetragon.getPointA()));
         return sides;
     }
 
@@ -37,8 +37,8 @@ public class ShapeOperation {
             throw new ShapeException("This shape is not a tetragon");
         }
         if (shapeValidator.isTetragon(coordinates, sides)) {
-            perimeter = sideAB + sideBC + sideCD + sideDA;
 
+            perimeter = sideAB + sideBC + sideCD + sideDA;
         }
         return perimeter;
     }

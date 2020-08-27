@@ -1,8 +1,7 @@
-package test.by.epam.shape.reader;
+package by.epam.shape.reader;
 
 
 import by.epam.shape.exception.ShapeException;
-import by.epam.shape.reader.DataReader;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

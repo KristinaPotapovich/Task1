@@ -1,7 +1,6 @@
-package test.by.epam.shape.parsing;
+package by.epam.shape.parsing;
 
 import by.epam.shape.exception.ShapeException;
-import by.epam.shape.parsing.DataParser;
 import by.epam.shape.reader.DataReader;
 import by.epam.shape.validation.ShapeValidator;
 import org.testng.Assert;
