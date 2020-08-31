@@ -1,7 +1,7 @@
 package by.epam.shape.repository;
 
 import by.epam.shape.entity.impl.Tetragon;
-import by.epam.shape.specification.Specification;
+import by.epam.shape.specification.TetragonSpecification;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,31 +9,31 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Repository {
-    private static Repository instance = new Repository();
+public class TetragonRepository {
+    private static TetragonRepository instance = new TetragonRepository();
     private List<Tetragon> tetragons = new ArrayList<>();
 
-    private Repository() {
+    private TetragonRepository() {
 
     }
 
-    public static Repository getInstance() {
+    public static TetragonRepository getInstance() {
         if (instance == null) {
-            instance = new Repository();
+            instance = new TetragonRepository();
         }
         return instance;
     }
 
-    public List<Tetragon> query(Specification specification) {
+    public List<Tetragon> query(TetragonSpecification tetragonSpecification) {
         List<Tetragon> resultTetragons = tetragons.stream()
-                .filter(tetragon -> specification.specify(tetragon))
+                .filter(tetragon -> tetragonSpecification.specify(tetragon))
                 .collect(Collectors.toList());
         return resultTetragons;
     }
 
 
-    public void sort(Comparator<Tetragon> c) {
-        tetragons.sort(c);
+    public void sort(Comparator<Tetragon> comparator) {
+        tetragons.sort(comparator);
     }
 
     public boolean add(Tetragon tetragon) {
@@ -49,8 +49,7 @@ public class Repository {
     }
 
     public List<Tetragon> getTetragons() {
-        List<Tetragon> unModifileTetragons = Collections.unmodifiableList(tetragons);
-        return unModifileTetragons;
+        return Collections.unmodifiableList(tetragons);
     }
 
     public void add(int index, Tetragon element) {

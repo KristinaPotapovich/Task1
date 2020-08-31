@@ -8,12 +8,11 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataReaderTest {
+public class DataReaderTest extends Assert {
     DataReader dataReader = new DataReader();
 
     @Test
     public void readDataTest() throws ShapeException {
-
         List<String> expected = new ArrayList<>();
         expected.add("2.0 1.0");
         expected.add("1a.0 2.0");
@@ -22,8 +21,12 @@ public class DataReaderTest {
         expected.add("7.0 3.0");
         expected.add("7y.0");
         expected.add("7.0 1.0");
+        expected.add("3.0 2.0");
+        expected.add("3.0 4.0");
+        expected.add("7.0 4.0");
+        expected.add("7.0 2.0");
         List<String> actual = dataReader.readData("init/data.txt");
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
     @Test(expectedExceptions = ShapeException.class)

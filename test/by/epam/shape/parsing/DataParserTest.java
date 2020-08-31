@@ -2,19 +2,27 @@ package by.epam.shape.parsing;
 
 import by.epam.shape.exception.ShapeException;
 import by.epam.shape.reader.DataReader;
-import by.epam.shape.validation.ShapeValidator;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataParserTest {
-    @Test
-    public void parseToDouble() throws ShapeException {
-        DataParser dataParser = new DataParser();
-        ShapeValidator shapeValidator = new ShapeValidator();
+public class DataParserTest extends Assert {
+    private DataParser dataParser;
+    private List<String> coordinatesFromData;
+
+
+    @BeforeTest
+    public void init() throws ShapeException {
+        dataParser = new DataParser();
         DataReader dataReader = new DataReader();
+        coordinatesFromData = dataReader.readData("init/data.txt");
+    }
+
+    @Test
+    public void parseToDoubleTest() {
         List<Double> expected = new ArrayList<>();
         expected.add(2.0);
         expected.add(1.0);
@@ -24,8 +32,30 @@ public class DataParserTest {
         expected.add(3.0);
         expected.add(7.0);
         expected.add(1.0);
-        List<String> coordinatesFromData = dataReader.readData("init/data.txt");
-        List<Double> actual = dataParser.parseToDouble(shapeValidator.filterInputData(coordinatesFromData));
-        Assert.assertEquals(actual, expected, "Test was not successful");
+        expected.add(3.0);
+        expected.add(2.0);
+        expected.add(3.0);
+        expected.add(4.0);
+        expected.add(7.0);
+        expected.add(4.0);
+        expected.add(7.0);
+        expected.add(2.0);
+        List<Double> actual = dataParser.parseToDouble(coordinatesFromData);
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void parseToDoubleNegativeTest() {
+        List<Double> expected = new ArrayList<>();
+        expected.add(2.0);
+        expected.add(1.0);
+        expected.add(2.0);
+        expected.add(3.0);
+        expected.add(7.0);
+        expected.add(3.0);
+        expected.add(7.0);
+        expected.add(1.0);
+        List<Double> actual = dataParser.parseToDouble(coordinatesFromData);
+        assertNotEquals(actual, expected);
     }
 }

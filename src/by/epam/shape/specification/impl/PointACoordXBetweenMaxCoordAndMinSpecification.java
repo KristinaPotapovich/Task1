@@ -1,9 +1,9 @@
 package by.epam.shape.specification.impl;
 
 import by.epam.shape.entity.impl.Tetragon;
-import by.epam.shape.specification.Specification;
+import by.epam.shape.specification.TetragonSpecification;
 
-public class PointACoordXBetweenMaxCoordAndMinSpecification implements Specification {
+public class PointACoordXBetweenMaxCoordAndMinSpecification implements TetragonSpecification {
     private double minPoint;
     private double maxPoint;
 
@@ -14,7 +14,6 @@ public class PointACoordXBetweenMaxCoordAndMinSpecification implements Specifica
 
     @Override
     public boolean specify(Tetragon tetragon) {
-        boolean result = tetragon.getPointA().getValueX() < maxPoint && tetragon.getPointA().getValueX() > minPoint;
-        return result;
+        return tetragon.getPointA().getValueX() < maxPoint && tetragon.getPointA().getValueX() > minPoint;
     }
 }

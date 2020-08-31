@@ -1,9 +1,7 @@
-package by.epam.shape.entity.impl;
-
-import by.epam.shape.entity.Shape;
+package by.epam.shape.entity;
 
 
-public class Point implements Shape {
+public class Point {
     private long pointId;
     private double valueX;
     private double valueY;

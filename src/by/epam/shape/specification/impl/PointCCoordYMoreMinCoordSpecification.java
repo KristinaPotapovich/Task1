@@ -1,9 +1,9 @@
 package by.epam.shape.specification.impl;
 
 import by.epam.shape.entity.impl.Tetragon;
-import by.epam.shape.specification.Specification;
+import by.epam.shape.specification.TetragonSpecification;
 
-public class PointCCoordYMoreMinCoordSpecification implements Specification {
+public class PointCCoordYMoreMinCoordSpecification implements TetragonSpecification {
     private double min;
 
     public PointCCoordYMoreMinCoordSpecification(double min) {

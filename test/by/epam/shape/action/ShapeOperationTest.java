@@ -1,9 +1,11 @@
 package by.epam.shape.action;
 
-import by.epam.shape.entity.impl.Point;
+import by.epam.shape.creator.PointCreator;
+import by.epam.shape.creator.TetragonCreator;
 import by.epam.shape.entity.impl.Tetragon;
 import by.epam.shape.exception.ShapeException;
-import by.epam.shape.generator.IdGenerator;
+import by.epam.shape.parsing.DataParser;
+import by.epam.shape.reader.DataReader;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -11,118 +13,54 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShapeOperationTest {
+public class ShapeOperationTest extends Assert {
 
     private ShapeOperation shapeOperation;
-    private List<Double> coordinates;
-    private Point firstPoint;
-    private Point secondPoint;
-    private Point thirdPoint;
-    private Point fourthPoint;
     private List<Tetragon> tetragons;
 
+
     @BeforeTest
-    public void init() {
+    public void init() throws ShapeException {
+        TetragonCreator tetragonCreator = new TetragonCreator();
+        PointCreator pointCreator = new PointCreator();
+        DataParser dataParser = new DataParser();
+        DataReader dataReader = new DataReader();
+        tetragons = tetragonCreator.create(pointCreator.create(dataParser.parseToDouble
+                (dataReader.readData("init/data.txt"))));
         shapeOperation = new ShapeOperation();
-
-        coordinates = new ArrayList<>();
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(3.0);
-        coordinates.add(7.0);
-        coordinates.add(3.0);
-        coordinates.add(7.0);
-        coordinates.add(1.0);
-
-        firstPoint = new Point(IdGenerator.generateId(), coordinates.get(0), coordinates.get(1));
-        secondPoint = new Point(IdGenerator.generateId(), coordinates.get(2), coordinates.get(3));
-        thirdPoint = new Point(IdGenerator.generateId(), coordinates.get(4), coordinates.get(5));
-        fourthPoint = new Point(IdGenerator.generateId(), coordinates.get(6), coordinates.get(7));
     }
 
     @Test
     public void calculateSideOfTetragonTest() {
-        double expected = 2.0;
-        double actual = shapeOperation.calculateSideFormula(firstPoint, secondPoint);
-        Assert.assertEquals(actual, expected, 0.0001);
-    }
-
-    @Test
-    public void findSideOfTetragonTest() {
-
         List<Double> expected = new ArrayList<>();
         expected.add(2.0);
-        expected.add(5.0);
+        expected.add(4.0);
         expected.add(2.0);
-        expected.add(5.0);
-
+        expected.add(4.0);
         List<Double> actual = new ArrayList<>();
-        actual.add(shapeOperation.calculateSideFormula(firstPoint, secondPoint));
-        actual.add(shapeOperation.calculateSideFormula(secondPoint, thirdPoint));
-        actual.add(shapeOperation.calculateSideFormula(thirdPoint, fourthPoint));
-        actual.add(shapeOperation.calculateSideFormula(fourthPoint, firstPoint));
-        Assert.assertEquals(actual, expected);
+        for (Tetragon tetragon : tetragons) {
+            actual = ShapeOperation.calculateSidesOfTetragon(tetragon);
+        }
+        assertEquals(actual,expected);
     }
 
     @Test
-    public void calculatePerimeter() throws ShapeException {
-        List<Double> sides = new ArrayList<>();
-        sides.add(1.0);
-        sides.add(5.0);
-        sides.add(2.0);
-        sides.add(5.0);
-        double expected = 13.0;
-        double actual = shapeOperation.calculatePerimeter(sides, coordinates);
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test(expectedExceptions = ShapeException.class)
-    public void trowShapeExceptionForPerimeter() throws ShapeException {
-        List<Double> sides = new ArrayList<>();
-        sides.add(2.0);
-        sides.add(5.0);
-        sides.add(2.0);
-        sides.add(5.0);
-        List<Double> coordinates = new ArrayList<>();
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        shapeOperation.calculatePerimeter(sides, coordinates);
+    public void calculatePerimeterTest() {
+        double expected = 12.0;
+        double actual = 0;
+        for (Tetragon tetragon : tetragons) {
+            actual = shapeOperation.calculatePerimeter(tetragon);
+        }
+        assertEquals(actual,expected,0.0001);
     }
 
     @Test
-    public void calculateArea() throws ShapeException {
-        List<Double> sides = new ArrayList<>();
-        sides.add(2.0);
-        sides.add(5.0);
-        sides.add(2.0);
-        sides.add(5.0);
-        double expected = 10;
-        double actual = shapeOperation.calculateArea(sides, coordinates);
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test(expectedExceptions = ShapeException.class)
-    public void trowShapeExceptionForArea() throws ShapeException {
-        List<Double> sides = new ArrayList<>();
-        sides.add(1.0);
-        sides.add(1.0);
-        sides.add(1.0);
-        sides.add(5.0);
-        List<Double> coordinates = new ArrayList<>();
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        coordinates.add(2.0);
-        coordinates.add(1.0);
-        shapeOperation.calculateArea(sides, coordinates);
+    public void calculateAreaTest(){
+        double expected = 8;
+        double actual = 0;
+        for (Tetragon tetragon : tetragons) {
+            actual = shapeOperation.calculateArea(tetragon);
+        }
+        assertEquals(actual,expected,0.0001);
     }
 }

@@ -1,21 +1,20 @@
 package by.epam.shape.entity.impl;
 
 import by.epam.shape.entity.Observable;
+import by.epam.shape.entity.Point;
 import by.epam.shape.observer.Observer;
-import by.epam.shape.entity.Shape;
-import by.epam.shape.exception.ShapeException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Tetragon implements Shape, Observable {
+public class Tetragon implements Observable {
     private long tetragonId;
     private Point pointA;
     private Point pointB;
     private Point pointC;
     private Point pointD;
-    List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
     public Tetragon(long tetragonId, Point pointA, Point pointB, Point pointC, Point pointD) {
         this.tetragonId = tetragonId;
@@ -26,11 +25,10 @@ public class Tetragon implements Shape, Observable {
     }
 
     public long getTetragonId() {
-
         return tetragonId;
     }
 
-    public void setTetragonId(long tetragonId) throws ShapeException {
+    public void setTetragonId(long tetragonId) {
 
         this.tetragonId = tetragonId;
         notifyObservers();
@@ -40,28 +38,26 @@ public class Tetragon implements Shape, Observable {
         return pointA;
     }
 
-    public void setPointA(Point pointA) throws ShapeException {
+    public void setPointA(Point pointA) {
         this.pointA = pointA;
         notifyObservers();
     }
 
     public Point getPointB() {
-
         return pointB;
     }
 
-    public void setPointB(Point pointB) throws ShapeException {
+    public void setPointB(Point pointB) {
 
         this.pointB = pointB;
         notifyObservers();
     }
 
     public Point getPointC() {
-
         return pointC;
     }
 
-    public void setPointC(Point pointC) throws ShapeException {
+    public void setPointC(Point pointC) {
 
         this.pointC = pointC;
         notifyObservers();
@@ -71,9 +67,26 @@ public class Tetragon implements Shape, Observable {
         return pointD;
     }
 
-    public void setPointD(Point pointD) throws ShapeException {
+    public void setPointD(Point pointD) {
         this.pointD = pointD;
         notifyObservers();
+    }
+
+    @Override
+    public void attach(Observer observer) {
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void detach(Observer observer) {
+        this.observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.actionPerformed(this);
+        }
     }
 
     @Override
@@ -107,26 +120,7 @@ public class Tetragon implements Shape, Observable {
                 append(pointA).append(", pointB=").append(pointB).append(", pointC=").
                 append(pointC).append(", pointD=").append(pointD).append('}').toString();
     }
-
-    @Override
-    public void attach(Observer observer) {
-        this.observers.add(observer);
-
-    }
-
-    @Override
-    public void detach(Observer observer) {
-        this.observers.remove(observer);
-
-    }
-
-    @Override
-    public void notifyObservers() throws ShapeException {
-        for (Observer observer : observers) {
-            observer.actionPerformed(this);
-        }
-
-    }
-
-
 }
+
+
+

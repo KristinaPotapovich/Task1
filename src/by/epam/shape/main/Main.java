@@ -1,20 +1,22 @@
 package by.epam.shape.main;
 
 import by.epam.shape.action.ShapeOperation;
-import by.epam.shape.creator.ShapeFactory;
-import by.epam.shape.creator.impl.PointCreator;
-import by.epam.shape.creator.impl.TetragonCreator;
-import by.epam.shape.entity.*;
-import by.epam.shape.entity.impl.Point;
+import by.epam.shape.comparator.TetragonComparatorById;
+import by.epam.shape.comparator.TetragonComparatorByPointACoordX;
+import by.epam.shape.comparator.TetragonComparatorByPointACoordY;
+import by.epam.shape.creator.PointCreator;
+import by.epam.shape.creator.TetragonCreator;
+import by.epam.shape.entity.Point;
 import by.epam.shape.entity.impl.Tetragon;
 import by.epam.shape.exception.ShapeException;
-import by.epam.shape.generator.IdGenerator;
 import by.epam.shape.parsing.DataParser;
 import by.epam.shape.reader.DataReader;
-import by.epam.shape.repository.Repository;
-import by.epam.shape.validation.ShapeValidator;
+import by.epam.shape.repository.TetragonRepository;
+import by.epam.shape.specification.impl.*;
 import by.epam.shape.observer.Observer;
 import by.epam.shape.observer.impl.TetragonObserver;
+import by.epam.shape.warehouse.TetragonParameters;
+import by.epam.shape.warehouse.Warehouse;
 
 import java.util.List;
 
@@ -22,28 +24,33 @@ public class Main {
     public static void main(String[] args) throws ShapeException {
         DataReader dataReader = new DataReader();
         List<String> coordinatesFromData = dataReader.readData("init/data.txt");
-        ShapeValidator validator = new ShapeValidator();
-        List<String> filterInputData = validator.filterInputData(coordinatesFromData);
         DataParser dataParser = new DataParser();
-        List<Double> coordinates = dataParser.parseToDouble(filterInputData);
-        ShapeFactory<List<Point>, Double> pointCreator = new PointCreator();
+        List<Double> coordinates = dataParser.parseToDouble(coordinatesFromData);
+        PointCreator pointCreator = new PointCreator();
         List<Point> points = pointCreator.create(coordinates);
-        validator.isThreePointsOnOneLine(coordinates);
-        ShapeFactory<List<Tetragon>, Point> tetragonCreator = new TetragonCreator();
+        TetragonCreator tetragonCreator = new TetragonCreator();
         List<Tetragon> tetragons = tetragonCreator.create(points);
         ShapeOperation shapeOperation = new ShapeOperation();
-        List<Double> sides;
         for (Tetragon tetragon : tetragons) {
             Observer observer = new TetragonObserver();
             tetragon.attach(observer);
-            sides = shapeOperation.calculateSideOfTetragon(tetragon);
-            TetragonParameters tetragonParameters = new TetragonParameters((shapeOperation.calculatePerimeter(sides, coordinates)),
-                    shapeOperation.calculateArea(sides, coordinates));
+            TetragonParameters tetragonParameters = new TetragonParameters((shapeOperation.calculatePerimeter(tetragon)),
+                    shapeOperation.calculateArea(tetragon));
             Warehouse.getInstance().put(tetragon.getTetragonId(), tetragonParameters);
-            Repository.getInstance().add(tetragon);
-            Point point = new Point(IdGenerator.generateId(), 25, 35);
-            tetragon.setPointA(point);
+            TetragonRepository.getInstance().add(tetragon);
+            TetragonComparatorById tetragonComparatorById = new TetragonComparatorById();
+            TetragonComparatorByPointACoordY tetragonComparatorByPointACoordY = new TetragonComparatorByPointACoordY();
+            TetragonComparatorByPointACoordX tetragonComparatorByPointACoordX = new TetragonComparatorByPointACoordX();
+            TetragonRepository.getInstance().sort(tetragonComparatorByPointACoordX);
         }
+        PointACoordXBetweenMaxCoordAndMinSpecification pointACoordXBetweenMaxCoordAndMinSpecification =
+                new PointACoordXBetweenMaxCoordAndMinSpecification(2, 9);
+        AreaLowMaxAreaSpecification areaLowMaxAreaSpecification = new AreaLowMaxAreaSpecification(10.0);
+        IdBetweenMaxIdAndMinIdSpecification idBetweenMaxIdAndMinIdSpecification = new IdBetweenMaxIdAndMinIdSpecification(9, 10);
+        IdLowMaxIdSpecification idLowMaxIdSpecification = new IdLowMaxIdSpecification(12);
+        IdMoreMinIdSpecification idMoreMinIdSpecification = new IdMoreMinIdSpecification(9);
+        PointCCoordYMoreMinCoordSpecification pointCCoordYMoreMinCoordSpecification = new PointCCoordYMoreMinCoordSpecification(10);
+        PerimeterLowMaxPerimeterSpecification perimeterLowMaxPerimeterSpecification = new PerimeterLowMaxPerimeterSpecification(15);
     }
 }
 

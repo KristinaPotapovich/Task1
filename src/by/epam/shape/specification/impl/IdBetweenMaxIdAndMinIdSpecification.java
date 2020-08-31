@@ -1,13 +1,13 @@
 package by.epam.shape.specification.impl;
 
 import by.epam.shape.entity.impl.Tetragon;
-import by.epam.shape.specification.Specification;
+import by.epam.shape.specification.TetragonSpecification;
 
-public class SpecificationBetweenMaxIdAndMinId implements Specification {
+public class IdBetweenMaxIdAndMinIdSpecification implements TetragonSpecification {
     private long minId;
     private long maxId;
 
-    public SpecificationBetweenMaxIdAndMinId(long minId, long maxId) {
+    public IdBetweenMaxIdAndMinIdSpecification(long minId, long maxId) {
         this.minId = minId;
         this.maxId = maxId;
     }

@@ -1,12 +1,12 @@
 package by.epam.shape.specification.impl;
 
 import by.epam.shape.entity.impl.Tetragon;
-import by.epam.shape.specification.Specification;
+import by.epam.shape.specification.TetragonSpecification;
 
-public class SpecificationIdLowMinId implements Specification {
+public class IdMoreMinIdSpecification implements TetragonSpecification {
     private long minId;
 
-    public SpecificationIdLowMinId(long minId) {
+    public IdMoreMinIdSpecification(long minId) {
         this.minId = minId;
     }
 

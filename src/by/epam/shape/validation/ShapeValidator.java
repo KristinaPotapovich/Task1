@@ -1,34 +1,48 @@
 package by.epam.shape.validation;
 
-import java.util.ArrayList;
+import by.epam.shape.action.ShapeOperation;
+import by.epam.shape.entity.impl.Tetragon;
+
 import java.util.List;
-import java.util.regex.Pattern;
+
 
 public class ShapeValidator {
+    private static ShapeValidator instance = new ShapeValidator();
+    private static final int COUNT_COORDINATES = 8;
+    private static final int SUM_OF_ANGLES = 360;
 
-    public static final String REGEX = "^[\\d+].?[\\d+]? [\\d+].?[\\d+]$";
-
-
-    public List<String> filterInputData(List<String> coordinatesFromData) {
-        List<String> groupOfCoordinates = new ArrayList<>();
-        for (String inputData : coordinatesFromData) {
-            if (Pattern.matches(REGEX, inputData)) {
-                groupOfCoordinates.add(inputData);
-            }
-        }
-        return groupOfCoordinates;
+    private ShapeValidator() {
     }
 
-    public boolean isTetragon(List<Double> coordinates, List<Double> sides) {
-        int count_coordinates = 8;
-
-        if (coordinates.size() % count_coordinates != 0) {
-            return false;
+    public static ShapeValidator getInstance() {
+        if (instance == null) {
+            instance = new ShapeValidator();
         }
-        return isSumOfThreeSidesLessThanFourth(sides);
+        return instance;
     }
 
-    private boolean isSumOfThreeSidesLessThanFourth(List<Double> sides) {
+    public boolean isTetragonValid(Tetragon tetragon) {
+        boolean result = false;
+        List<Double> coordinates = ShapeOperation.calculateCoordinatesOfTetragon(tetragon);
+        if (coordinates.size() % COUNT_COORDINATES == 0 && isConvexTetragon(tetragon) &&
+                isSumOfThreeSidesLessThanFourth(tetragon) && !isThreePointsOnOneLine(tetragon)) {
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean isConvexTetragon(Tetragon tetragon) {
+        List<Double> sides = ShapeOperation.calculateSidesOfTetragon(tetragon);
+        boolean result = false;
+        int countSidesOfTetragon = sides.size();
+        if (SUM_OF_ANGLES == (countSidesOfTetragon - 2) * 180) {
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean isSumOfThreeSidesLessThanFourth(Tetragon tetragon) {
+        List<Double> sides = ShapeOperation.calculateSidesOfTetragon(tetragon);
         double sideAB = sides.get(0);
         double sideBC = sides.get(1);
         double sideCD = sides.get(2);
@@ -37,25 +51,28 @@ public class ShapeValidator {
                 sideCD > sideBC && sideBC + sideCD + sideDA > sideAB;
     }
 
-    public boolean isThreePointsOnOneLine(List<Double> coordinates) {
-        double firstPointX = coordinates.get(0);
-        double firstPointY = coordinates.get(1);
-        double secondPointX = coordinates.get(2);
-        double secondPointY = coordinates.get(3);
-        double thirdPointX = coordinates.get(4);
-        double thirdPointY = coordinates.get(5);
-        double forthPointX = coordinates.get(6);
-        double fourthPointY = coordinates.get(7);
+    private boolean isThreePointsOnOneLine(Tetragon tetragon) {
+        double firstPointX = tetragon.getPointA().getValueX();
+        double firstPointY = tetragon.getPointA().getValueY();
+        double secondPointX = tetragon.getPointB().getValueX();
+        double secondPointY = tetragon.getPointB().getValueY();
+        double thirdPointX = tetragon.getPointC().getValueX();
+        double thirdPointY = tetragon.getPointC().getValueY();
+        double forthPointX = tetragon.getPointD().getValueX();
+        double fourthPointY = tetragon.getPointD().getValueY();
         boolean result = false;
 
-        if ((firstPointX == secondPointX && secondPointX == thirdPointX && thirdPointX == forthPointX) ||
-                (firstPointY == secondPointY && secondPointY == thirdPointY && thirdPointY == fourthPointY)) {
-
+        if ((firstPointX == firstPointY && thirdPointX == thirdPointY && fourthPointY == forthPointX) ||
+                (secondPointX == secondPointY && thirdPointX == thirdPointY && fourthPointY == forthPointX) ||
+                (firstPointX == firstPointY && secondPointX == secondPointY && fourthPointY == forthPointX) ||
+                (firstPointX == firstPointY && secondPointX == secondPointY && thirdPointX == thirdPointY)) {
+            result = true;
         }
         return result;
     }
 
-    public boolean isSquare(List<Double> sides) {
+    public boolean isSquare(Tetragon tetragon) {
+        List<Double> sides = ShapeOperation.calculateSidesOfTetragon(tetragon);
         boolean result = false;
         double sideAB = sides.get(0);
         double sideBC = sides.get(1);
@@ -67,7 +84,8 @@ public class ShapeValidator {
         return result;
     }
 
-    public boolean isTrapezoid(List<Double> sides) {
+    public boolean isTrapezoid(Tetragon tetragon) {
+        List<Double> sides = ShapeOperation.calculateSidesOfTetragon(tetragon);
         double sideAB = sides.get(0);
         double sideCD = sides.get(2);
         boolean result = false;
@@ -77,7 +95,8 @@ public class ShapeValidator {
         return result;
     }
 
-    public boolean isRectangle(List<Double> sides) {
+    public boolean isRectangle(Tetragon tetragon) {
+        List<Double> sides = ShapeOperation.calculateSidesOfTetragon(tetragon);
         boolean result = false;
         double sideAB = sides.get(0);
         double sideCD = sides.get(2);
@@ -87,16 +106,16 @@ public class ShapeValidator {
         return result;
     }
 
-    public boolean isRhombus(List<Double> coordinates) {
+    public boolean isRhombus(Tetragon tetragon) {
         boolean result = false;
-        double coordPoint1X = coordinates.get(0);
-        double coordPoint1Y = coordinates.get(1);
-        double coordPoint2X = coordinates.get(2);
-        double coordPoint2Y = coordinates.get(3);
-        double coordPoint3X = coordinates.get(4);
-        double coordPoint3Y = coordinates.get(5);
-        double coordPoint4X = coordinates.get(6);
-        double coordPoint4Y = coordinates.get(7);
+        double coordPoint1X = tetragon.getPointA().getValueX();
+        double coordPoint1Y = tetragon.getPointA().getValueY();
+        double coordPoint2X = tetragon.getPointB().getValueX();
+        double coordPoint2Y = tetragon.getPointB().getValueY();
+        double coordPoint3X = tetragon.getPointC().getValueX();
+        double coordPoint3Y = tetragon.getPointC().getValueY();
+        double coordPoint4X = tetragon.getPointD().getValueX();
+        double coordPoint4Y = tetragon.getPointD().getValueY();
         double perpendicularity = ((coordPoint1X - coordPoint3X) * (coordPoint2X - coordPoint4X)) +
                 ((coordPoint1Y - coordPoint3Y) * (coordPoint2Y - coordPoint4Y));
         double onePartOfFirstDiagonal = coordPoint1X + coordPoint3X;
@@ -108,19 +127,5 @@ public class ShapeValidator {
             result = true;
         }
         return result;
-    }
-
-
-    public boolean isConvexTetragon(List<Double> coordinates, List<Double> sides) {
-        int sumOfAngles = 360;
-        int countOfSidesOfTetragon = 0;
-        boolean b = false;
-        if (isTetragon(coordinates, sides)) {
-            countOfSidesOfTetragon = 4;
-        }
-        if (sumOfAngles == ((countOfSidesOfTetragon - 2) * 180)) {
-            b = true;
-        }
-        return b;
     }
 }

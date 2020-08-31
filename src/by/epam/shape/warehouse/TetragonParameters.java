@@ -1,4 +1,4 @@
-package by.epam.shape.entity;
+package by.epam.shape.warehouse;
 
 public class TetragonParameters {
     private double perimeterOfTetragon;
