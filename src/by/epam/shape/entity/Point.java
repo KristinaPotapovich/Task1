@@ -17,12 +17,24 @@ public class Point {
         return pointId;
     }
 
+    public void setPointId(long pointId) {
+        this.pointId = pointId;
+    }
+
     public double getValueX() {
         return valueX;
     }
 
+    public void setValueX(double valueX) {
+        this.valueX = valueX;
+    }
+
     public double getValueY() {
         return valueY;
+    }
+
+    public void setValueY(double valueY) {
+        this.valueY = valueY;
     }
 
     @Override

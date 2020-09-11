@@ -1,6 +1,5 @@
 package by.epam.shape.reader;
 
-
 import by.epam.shape.exception.ShapeException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataReaderTest extends Assert {
-    DataReader dataReader = new DataReader();
+    private DataReader dataReader = new DataReader();
 
     @Test
     public void readDataTest() throws ShapeException {

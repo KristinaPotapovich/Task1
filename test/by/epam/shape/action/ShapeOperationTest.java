@@ -41,7 +41,7 @@ public class ShapeOperationTest extends Assert {
         for (Tetragon tetragon : tetragons) {
             actual = ShapeOperation.calculateSidesOfTetragon(tetragon);
         }
-        assertEquals(actual,expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -51,16 +51,16 @@ public class ShapeOperationTest extends Assert {
         for (Tetragon tetragon : tetragons) {
             actual = shapeOperation.calculatePerimeter(tetragon);
         }
-        assertEquals(actual,expected,0.0001);
+        assertEquals(actual, expected, 0.0001);
     }
 
     @Test
-    public void calculateAreaTest(){
+    public void calculateAreaTest() {
         double expected = 8;
         double actual = 0;
         for (Tetragon tetragon : tetragons) {
             actual = shapeOperation.calculateArea(tetragon);
         }
-        assertEquals(actual,expected,0.0001);
+        assertEquals(actual, expected, 0.0001);
     }
 }
